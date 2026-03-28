@@ -11,31 +11,45 @@
 #include <GL/freeglut.h>
 #include "Models.h"
 
-void drawFloor() {
-    glColor3f(0.6, 0.6, 0.65);  // grey moon surface colour for now
+void drawFloor(GLuint moonTex) {
+    //glColor3f(0.6, 0.6, 0.65);
+    //glPushMatrix();
+    //    glRotatef(-90.0, 1, 0, 0);
+    //    glutSolidCylinder(20.0, 0.3, 64, 1);
+    //glPopMatrix();
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, moonTex);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glColor3f(1.0, 1.0, 1.0);
+
     glPushMatrix();
         glRotatef(-90.0, 1, 0, 0);
-        glutSolidCylinder(20.0, 0.3, 64, 1);
+        GLUquadric* qFloor = gluNewQuadric();
+        gluQuadricTexture(qFloor, GL_TRUE);
+        gluDisk(qFloor, 0.0, 20.0, 64, 8);
+        gluDeleteQuadric(qFloor);
     glPopMatrix();
+
+    glDisable(GL_TEXTURE_2D);
 }
 
-void drawSpaceship1() {
-    // main saucer body (dark purple)
+void drawSpaceship1() { // THE PURPLE ONE
+    // main saucer body
     glPushMatrix();
         glColor3f(0.427, 0.227, 0.839);
         glScalef(3.0, 0.5, 3.0);
         glutSolidSphere(0.8f, 32, 16);
     glPopMatrix();
 
-    // circle part on top (lighter purple)
+    // circle part on top
     glPushMatrix();
         glColor3f(0.631, 0.451, 1);
-        glTranslatef(0.0f, 0.4f, 0.0f);  // sit on top of saucer
+        glTranslatef(0.0f, 0.4f, 0.0f);
         glScalef(0.8f, 0.7f, 0.8f);
         glutSolidSphere(1.4, 24, 12);
     glPopMatrix();
 
-    // bottom circle (yellow)
+    // bottom circle
     glPushMatrix();
         glColor3f(1.0, 0.6, 0.1);
         glTranslatef(0.0, -0.18, 0.0);
@@ -43,7 +57,7 @@ void drawSpaceship1() {
         glutSolidSphere(0.6, 32, 16);
     glPopMatrix();
 
-    // top antenna pole (grey)
+    // top antenna pole
     glPushMatrix();
         glColor3f(0.7, 0.7, 0.75);
         glTranslatef(0.0, 1.2, 0.0);
@@ -51,32 +65,14 @@ void drawSpaceship1() {
         glutSolidCylinder(0.03, 0.5, 12, 1);
     glPopMatrix();
 
-    // ball on antenna (yellow)
+    // ball on antenna
     glPushMatrix();
         glColor3f(1.0, 0.6, 0.1);
         glTranslatef(0.0, 1.7, 0.0);
         glutSolidSphere(0.08, 12, 6);
     glPopMatrix();
 
-    // 3 circle lights underneath (light blue) -- LEAVING OUT FOR NOW
-    //glColor3f(0.4, 0.9, 1.0);
-
-    //glPushMatrix();
-    //    glTranslatef(-0.6, -0.6, 0.0);
-    //    glutSolidSphere(0.12, 16, 8);
-    //glPopMatrix();
-
-    //glPushMatrix();
-    //    glTranslatef(0.6, -0.6, 0.0);
-    //    glutSolidSphere(0.12, 16, 8);
-    //glPopMatrix();
-
-    //glPushMatrix();
-    //    glTranslatef(0.0, -0.6, 0.6);
-    //    glutSolidSphere(0.12, 16, 8);
-    //glPopMatrix();
-
-    // circles around rim (yellow)
+    // circles around edge
     glColor3f(1.0, 0.6, 0.1);
 
     int numLights = 12;
@@ -91,7 +87,7 @@ void drawSpaceship1() {
         glPopMatrix();
     }
 
-    // seats (light purple)
+    // seats
     glColor3f(0.631, 0.451, 1);
 
     // left seat base
@@ -126,64 +122,46 @@ void drawSpaceship1() {
 
 }
 
-void drawSpaceship2() {
-    // main saucer body (dark green)
+void drawSpaceship2() { // THE GREEN ONE
+    // main saucer body
     glPushMatrix();
-    glColor3f(0.235, 0.58, 0.376);
-    glScalef(3.0, 0.5, 3.0);
-    glutSolidSphere(0.8f, 32, 16);
+        glColor3f(0.235, 0.58, 0.376);
+        glScalef(3.0, 0.5, 3.0);
+        glutSolidSphere(0.8f, 32, 16);
     glPopMatrix();
 
-    // circle part on top (lighter green)
+    // circle part on top
     glPushMatrix();
-    glColor3f(0.333, 0.871, 0.553);
-    glTranslatef(0.0f, 0.4f, 0.0f);  // sit on top of saucer
-    glScalef(0.8f, 0.7f, 0.8f);
-    glutSolidSphere(1.4, 24, 12);
+        glColor3f(0.333, 0.871, 0.553);
+        glTranslatef(0.0f, 0.4f, 0.0f);
+        glScalef(0.8f, 0.7f, 0.8f);
+        glutSolidSphere(1.4, 24, 12);
     glPopMatrix();
 
-    // bottom circle (yellow)
+    // bottom circle
     glPushMatrix();
-    glColor3f(1.0, 0.6, 0.1);
-    glTranslatef(0.0, -0.18, 0.0);
-    glScalef(2.4, 0.8, 2.4);
-    glutSolidSphere(0.6, 32, 16);
+        glColor3f(1.0, 0.6, 0.1);
+        glTranslatef(0.0, -0.18, 0.0);
+        glScalef(2.4, 0.8, 2.4);
+        glutSolidSphere(0.6, 32, 16);
     glPopMatrix();
 
-    // top antenna pole (grey)
+    // top antenna polE
     glPushMatrix();
-    glColor3f(0.7, 0.7, 0.75);
-    glTranslatef(0.0, 1.2, 0.0);
-    glRotatef(-90.0, 1, 0, 0);
-    glutSolidCylinder(0.03, 0.5, 12, 1);
+        glColor3f(0.7, 0.7, 0.75);
+        glTranslatef(0.0, 1.2, 0.0);
+        glRotatef(-90.0, 1, 0, 0);
+        glutSolidCylinder(0.03, 0.5, 12, 1);
     glPopMatrix();
 
-    // ball on antenna (yellow)
+    // ball on antenna
     glPushMatrix();
-    glColor3f(1.0, 0.6, 0.1);
-    glTranslatef(0.0, 1.7, 0.0);
-    glutSolidSphere(0.08, 12, 6);
+        glColor3f(1.0, 0.6, 0.1);
+        glTranslatef(0.0, 1.7, 0.0);
+        glutSolidSphere(0.08, 12, 6);
     glPopMatrix();
 
-    // 3 circle lights underneath (light blue) -- LEAVING OUT FOR NOW
-    //glColor3f(0.4, 0.9, 1.0);
-
-    //glPushMatrix();
-    //    glTranslatef(-0.6, -0.6, 0.0);
-    //    glutSolidSphere(0.12, 16, 8);
-    //glPopMatrix();
-
-    //glPushMatrix();
-    //    glTranslatef(0.6, -0.6, 0.0);
-    //    glutSolidSphere(0.12, 16, 8);
-    //glPopMatrix();
-
-    //glPushMatrix();
-    //    glTranslatef(0.0, -0.6, 0.6);
-    //    glutSolidSphere(0.12, 16, 8);
-    //glPopMatrix();
-
-    // circles around rim (yellow)
+    // circles around rim
     glColor3f(1.0, 0.6, 0.1);
 
     int numLights = 12;
@@ -198,98 +176,97 @@ void drawSpaceship2() {
         glPopMatrix();
     }
 
-    // seats (light green)
+    // seats
     glColor3f(0.333, 0.871, 0.553);
 
     // left seat base
     glPushMatrix();
-    glTranslatef(-1.85, 0.15, 0.0);
-    glScalef(0.8, 0.3, 0.8);
-    glutSolidCube(1.0);
+        glTranslatef(-1.85, 0.15, 0.0);
+        glScalef(0.8, 0.3, 0.8);
+        glutSolidCube(1.0);
     glPopMatrix();
 
     // left seat back
     glPushMatrix();
-    glTranslatef(-1.5, 0.6, 0.0);
-    glRotatef(90.0, 0., 0., 1.);
-    glScalef(1.0, 0.3, 0.8);
-    glutSolidCube(1.0);
+        glTranslatef(-1.5, 0.6, 0.0);
+        glRotatef(90.0, 0., 0., 1.);
+        glScalef(1.0, 0.3, 0.8);
+        glutSolidCube(1.0);
     glPopMatrix();
 
     // right seat base
     glPushMatrix();
-    glTranslatef(1.85, 0.15, 0.0);
-    glScalef(0.8, 0.3, 0.8);
-    glutSolidCube(1.0);
+        glTranslatef(1.85, 0.15, 0.0);
+        glScalef(0.8, 0.3, 0.8);
+        glutSolidCube(1.0);
     glPopMatrix();
 
     // right seat back
     glPushMatrix();
-    glTranslatef(1.5, 0.6, 0.0);
-    glRotatef(90.0, 0., 0., 1.);
-    glScalef(1.0, 0.3, 0.8);
-    glutSolidCube(1.0);
+        glTranslatef(1.5, 0.6, 0.0);
+        glRotatef(90.0, 0., 0., 1.);
+        glScalef(1.0, 0.3, 0.8);
+        glutSolidCube(1.0);
     glPopMatrix();
-
 }
 
-void drawRideStructure(float swingAngle) {
+void drawRideStructure(float swingAngle) { // THE POLES!
     float swingDegrees = swingAngle * 180.0 / M_PI;
 
-    // --- CENTRAL POLE ---
+    // pole in middle
     glPushMatrix();
-    glColor3f(0.5, 0.5, 0.55);
-    glRotatef(-90.0, 1, 0, 0);  // point upward
-    glutSolidCylinder(0.4, 15.0, 16, 1);
+        glColor3f(0.5, 0.5, 0.55);
+        glRotatef(-90.0, 1, 0, 0);
+        glutSolidCylinder(0.4, 15.0, 16, 1);
     glPopMatrix();
 
-    // --- CROSSBAR (horizontal T across the top) ---
+    // top bar (horizontal)
     glPushMatrix();
-    glColor3f(0.45, 0.45, 0.5);
-    glTranslatef(-8.0, 15.0, 0.0);  // start left of pole top
-    glRotatef(90.0, 0, 1, 0);       // rotate to lie horizontal
-    glutSolidCylinder(0.3, 16.0, 16, 1);  // 16 units total width
+        glColor3f(0.45, 0.45, 0.5);
+        glTranslatef(-8.0, 15.0, 0.0);
+        glRotatef(90.0, 0, 1, 0);
+        glutSolidCylinder(0.3, 16.0, 16, 1);
     glPopMatrix();
 
-    // LEFT CABLE AND SHIP
+    // left cable and ship
     glPushMatrix();
         glTranslatef(-6.0, 15.0, 0.0);
         glRotatef(swingDegrees, 1, 0, 0);
         glTranslatef(6.0, -15.0, 0.0);
 
-        // --- LEFT CABLE ---
+        // left cable
         glPushMatrix();
             glColor3f(0.4, 0.4, 0.45);
-            glTranslatef(-6.0, 7.0, 0.0);   // hang from left end of crossbar
+            glTranslatef(-6.0, 7.0, 0.0);
             glRotatef(-90.0, 1, 0, 0);
             glutSolidCylinder(0.1, 8.0, 8, 1);
         glPopMatrix();
-        // --- LEFT SHIP ---
+        // left ship
         glPushMatrix();
             glScalef(1.5, 1.5, 1.5);
-            glTranslatef(-4.0, 3.0, 0.0);   // position at bottom of left cable
+            glTranslatef(-4.0, 3.0, 0.0);
             glRotatef(90.0, 0, 1, 0);
             drawSpaceship1();
         glPopMatrix();
     glPopMatrix();
 
-    // RIGHT CABLE AND SHIP
+    // right cable and ship
     glPushMatrix();
     glTranslatef(6.0, 15.0, 0.0);
         glRotatef(-swingDegrees, 1, 0, 0);
         glTranslatef(-6.0, -15.0, 0.0);
 
-        // --- RIGHT CABLE ---
+        // right cable
         glPushMatrix();
             glColor3f(0.4, 0.4, 0.45);
-            glTranslatef(6.0, 7.0, 0.0);    // hang from right end of crossbar
+            glTranslatef(6.0, 7.0, 0.0);
             glRotatef(-90.0, 1, 0, 0);
             glutSolidCylinder(0.1, 8.0, 8, 1);
         glPopMatrix();
-        // --- RIGHT SHIP ---
+        // right ship
         glPushMatrix();
             glScalef(1.5, 1.5, 1.5);
-            glTranslatef(4.0, 3.0, 0.0);    // position at bottom of right cable
+            glTranslatef(4.0, 3.0, 0.0);
             glRotatef(90.0, 0, 1, 0);
             drawSpaceship2();
         glPopMatrix();
@@ -297,112 +274,112 @@ void drawRideStructure(float swingAngle) {
 }
 
 void drawAlien() {
-    // --- BODY ---
+    // body
     glPushMatrix();
-    glColor3f(1.0, 0.6, 0.75);  // pink
-    glTranslatef(0.0, 0.8, 0.0);
-    glScalef(0.6, 0.8, 0.6);
-    glutSolidSphere(0.5, 16, 12);
+        glColor3f(1.0, 0.6, 0.75);
+        glTranslatef(0.0, 0.8, 0.0);
+        glScalef(0.6, 0.8, 0.6);
+        glutSolidSphere(0.5, 16, 12);
     glPopMatrix();
 
-    // --- HEAD (bigger than body) ---
+    // head
     glPushMatrix();
-    glColor3f(1.0, 0.6, 0.75);  // same pink
-    glTranslatef(0.0, 1.7, 0.0);
-    glutSolidSphere(0.7, 24, 16);
+        glColor3f(1.0, 0.6, 0.75);
+        glTranslatef(0.0, 1.7, 0.0);
+        glutSolidSphere(0.7, 24, 16);
     glPopMatrix();
 
-    // --- LEFT EYE (light) ---
+    // left eye
     glPushMatrix();
-    glColor3f(1.0, 1.0, 1.0);  // near black
-    glTranslatef(-0.28, 1.75, 0.55);
-    glutSolidSphere(0.22, 16, 12);
+        glColor3f(1.0, 1.0, 1.0);
+        glTranslatef(-0.28, 1.75, 0.55);
+        glutSolidSphere(0.22, 16, 12);
     glPopMatrix();
 
-    // --- LEFT EYE PUPIL ---
+    // left pupil
     glPushMatrix();
-    glColor3f(0.1, 0.1, 0.15);
-    glTranslatef(-0.22, 1.83, 0.72);
-    glutSolidSphere(0.1, 8, 6);
+        glColor3f(0.1, 0.1, 0.15);
+        glTranslatef(-0.22, 1.83, 0.72);
+        glutSolidSphere(0.1, 8, 6);
     glPopMatrix();
 
-    // --- RIGHT EYE (light) ---
+    // right eye
     glPushMatrix();
-    glColor3f(1.0, 1.0, 1.0);
-    glTranslatef(0.28, 1.75, 0.55);
-    glutSolidSphere(0.22, 16, 12);
+        glColor3f(1.0, 1.0, 1.0);
+        glTranslatef(0.28, 1.75, 0.55);
+        glutSolidSphere(0.22, 16, 12);
     glPopMatrix();
 
-    // --- RIGHT EYE PUPIL ---
+    // right pupil
     glPushMatrix();
-    glColor3f(0.1, 0.1, 0.15);
-    glTranslatef(0.34, 1.83, 0.72);
-    glutSolidSphere(0.1, 8, 6);
+        glColor3f(0.1, 0.1, 0.15);
+        glTranslatef(0.34, 1.83, 0.72);
+        glutSolidSphere(0.1, 8, 6);
     glPopMatrix();
 
-    // --- LEFT ANTENNA BASE ---
+    // left antenna
     glPushMatrix();
-    glColor3f(1.0, 0.6, 0.75);
-    glTranslatef(0.4, 2.2, 0.0);
-    glRotatef(-30.0, 0, 0, 1);  // angle outward
-    glRotatef(-90.0, 1, 0, 0);
-    glutSolidCylinder(0.04, 0.6, 8, 1);
+        glColor3f(1.0, 0.6, 0.75);
+        glTranslatef(0.4, 2.2, 0.0);
+        glRotatef(-30.0, 0, 0, 1);
+        glRotatef(-90.0, 1, 0, 0);
+        glutSolidCylinder(0.04, 0.6, 8, 1);
     glPopMatrix();
 
-    // --- LEFT ANTENNA BALL ---
+    // left antenna ball
     glPushMatrix();
-    glColor3f(0.6, 0.9, 1.0);
-    glTranslatef(-0.7, 2.72, 0.0);
-    glutSolidSphere(0.1, 12, 8);
+        glColor3f(0.6, 0.9, 1.0);
+        glTranslatef(-0.7, 2.72, 0.0);
+        glutSolidSphere(0.1, 12, 8);
     glPopMatrix();
 
-    // --- RIGHT ANTENNA BASE ---
+    // right antenna
     glPushMatrix();
-    glColor3f(1.0, 0.6, 0.75);
-    glTranslatef(-0.4, 2.2, 0.0);
-    glRotatef(30.0, 0, 0, 1);  // angle outward other way
-    glRotatef(-90.0, 1, 0, 0);
-    glutSolidCylinder(0.04, 0.6, 8, 1);
+        glColor3f(1.0, 0.6, 0.75);
+        glTranslatef(-0.4, 2.2, 0.0);
+        glRotatef(30.0, 0, 0, 1);
+        glRotatef(-90.0, 1, 0, 0);
+        glutSolidCylinder(0.04, 0.6, 8, 1);
     glPopMatrix();
 
-    // --- RIGHT ANTENNA BALL ---
+    // right antenna ball
     glPushMatrix();
-    glColor3f(0.6, 0.9, 1.0);  // light blue ball like the image
-    glTranslatef(0.7, 2.72, 0.0);
-    glutSolidSphere(0.1, 12, 8);
+        glColor3f(0.6, 0.9, 1.0);
+        glTranslatef(0.7, 2.72, 0.0);
+        glutSolidSphere(0.1, 12, 8);
     glPopMatrix();
 
-    // --- LEFT ARM ---
+    // left arm
     glPushMatrix();
-    glColor3f(1.0, 0.6, 0.75);
-    glTranslatef(-0.25, 0.8, 0.0);
-    glRotatef(40.0, 0, 0, 1);   // angle upward like waving
-    glRotatef(-90.0, 1, 0, 0);
-    glutSolidCylinder(0.07, 0.45, 8, 1);
+        glColor3f(1.0, 0.6, 0.75);
+        glTranslatef(-0.25, 0.8, 0.0);
+        glRotatef(40.0, 0, 0, 1);
+        glRotatef(-90.0, 1, 0, 0);
+        glutSolidCylinder(0.07, 0.45, 8, 1);
     glPopMatrix();
 
-    // --- RIGHT ARM ---
+    // right arm
     glPushMatrix();
-    glColor3f(1.0, 0.6, 0.75);
-    glTranslatef(0.25, 0.8, 0.0);
-    glRotatef(-40.0, 0, 0, 1);  // angle other way
-    glRotatef(-90.0, 1, 0, 0);
-    glutSolidCylinder(0.07, 0.45, 8, 1);
+        glColor3f(1.0, 0.6, 0.75);
+        glTranslatef(0.25, 0.8, 0.0);
+        glRotatef(-40.0, 0, 0, 1);
+        glRotatef(-90.0, 1, 0, 0);
+        glutSolidCylinder(0.07, 0.45, 8, 1);
     glPopMatrix();
 
-    // --- LEFT LEG ---
+    // left leg
     glPushMatrix();
-    glColor3f(1.0, 0.6, 0.75);
-    glTranslatef(-0.18, 0.35, 0.0);
-    glRotatef(-90.0, 1, 0, 0);
-    glutSolidCylinder(0.1, 0.3, 8, 1);
+        glColor3f(1.0, 0.6, 0.75);
+        glTranslatef(-0.18, 0.35, 0.0);
+        glRotatef(-90.0, 1, 0, 0);
+        glutSolidCylinder(0.1, 0.3, 8, 1);
     glPopMatrix();
 
-    // --- RIGHT LEG ---
+    // right leg
     glPushMatrix();
-    glColor3f(1.0, 0.6, 0.75);
-    glTranslatef(0.18, 0.35, 0.0);
-    glRotatef(-90.0, 1, 0, 0);
-    glutSolidCylinder(0.1, 0.3, 8, 1);
+        glColor3f(1.0, 0.6, 0.75);
+        glTranslatef(0.18, 0.35, 0.0);
+        glRotatef(-90.0, 1, 0, 0);
+        glutSolidCylinder(0.1, 0.3, 8, 1);
     glPopMatrix();
 }

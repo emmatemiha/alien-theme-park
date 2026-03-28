@@ -5,7 +5,7 @@
 //  Header file for a collection of models for an alien themepark
 //  ========================================================================
 
-void drawFloor();
+void drawFloor(GLuint moonTex);
 void drawSpaceship1();
 void drawSpaceship2();
 void drawRideStructure(float swingAngle);
