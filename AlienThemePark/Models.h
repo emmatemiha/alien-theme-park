@@ -9,4 +9,4 @@ void drawFloor(GLuint moonTex);
 void drawSpaceship1();
 void drawSpaceship2();
 void drawRideStructure(float swingAngle);
-void drawAlien();
+void drawAlien(float armAngle, float antennaAngle, float r = 1.0f, float g = 0.6f, float b = 0.75f);

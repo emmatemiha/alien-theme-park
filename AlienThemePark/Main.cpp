@@ -16,6 +16,7 @@ float camAngle = 0.0f;
 float camX = 0.0f, camZ = 35.0f;
 bool specialStates[256] = { false };
 float camHeight = -2.0f;
+bool keyStates[256] = { false };
 
 float swingAngle = 1.0f;
 float swingSpeed = 0.0f;
@@ -24,6 +25,10 @@ const float armLength = 8.0f;
 
 GLuint txId[2];
 GLUquadric* q;
+
+float alienArmAngle = 0.0f;
+float alienAntennaAngle = 0.0f;
+float alienFrame = 0.0f;
 
 void loadTexture() {
     glGenTextures(2, txId);
@@ -75,27 +80,38 @@ void specialUp(int key, int x, int y) {
     specialStates[key] = false;
 }
 
+void keyboard(unsigned char key, int x, int y) {
+    keyStates[key] = true;
+}
+
+void keyboardUp(unsigned char key, int x, int y) {
+    keyStates[key] = false;
+}
+
 // add a timer to update camera each frame
 void timer(int value) {
+
+    alienFrame += 0.05f;
+    alienArmAngle = 18.0f * sin(alienFrame);
+    alienAntennaAngle = -25.0f * sin(alienFrame);
+
 
     float acceleration = -(gravity / armLength) * sin(swingAngle);
     swingSpeed += acceleration * 0.016f;
     swingAngle += swingSpeed * 0.016f;
 
-    if (specialStates[GLUT_KEY_LEFT])  camAngle -= 1.0f;
-    if (specialStates[GLUT_KEY_RIGHT]) camAngle += 1.0f;
-    if (specialStates[GLUT_KEY_UP])    camZ -= 0.1f;
-    if (specialStates[GLUT_KEY_DOWN])  camZ += 0.1f;
+    // camera movements
+    if (specialStates[GLUT_KEY_DOWN])  camHeight += 0.2f;
+    if (specialStates[GLUT_KEY_UP])    camHeight -= 0.2f;
+    if (specialStates[GLUT_KEY_LEFT])  camX -= 0.2f;
+    if (specialStates[GLUT_KEY_RIGHT]) camX += 0.2f;
+    if (keyStates['w']) camZ -= 0.2f;
+    if (keyStates['s']) camZ += 0.2f;
+    if (keyStates['a']) camAngle -= 1.0f;
+    if (keyStates['d']) camAngle += 1.0f;
 
     glutPostRedisplay();
     glutTimerFunc(16, timer, 0);
-}
-
-void keyboard(unsigned char key, int x, int y) {
-    if (key == 'w') camHeight += 0.2f;  // look more from above
-    if (key == 's') camHeight -= 0.2f;  // look more from below
-    if (key == 27)  exit(0);            // ESC to quit
-    glutPostRedisplay();
 }
 
 void display(void) {
@@ -103,7 +119,7 @@ void display(void) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    glTranslatef(0.0f, camHeight, -camZ);
+    glTranslatef(-camX, camHeight, -camZ);
     glRotatef(camAngle, 0, 1, 0);
 
     float lightPos[] = { 10, 20, 10, 1 };
@@ -131,9 +147,41 @@ void display(void) {
 
     drawFloor(txId[1]);
     drawRideStructure(swingAngle);
+
+    // pink alien
     glPushMatrix();
-        glTranslatef(-5.0, 0.0, 0.0);
-        drawAlien();
+        glTranslatef(-5.0, -0.35, 0.0);
+        drawAlien(alienArmAngle, alienAntennaAngle);
+    glPopMatrix();
+
+    // blue alien
+    glPushMatrix();
+        glTranslatef(8.0, -0.35, 5.0);
+        drawAlien(alienArmAngle, alienAntennaAngle, 0.396f, 0.827f, 1.0f);
+    glPopMatrix();
+
+    // green alien
+    glPushMatrix();
+        glTranslatef(-7.0, -0.35, 12.0);
+        drawAlien(alienArmAngle, alienAntennaAngle, 0.396f, 1.0f, 0.557f);
+    glPopMatrix();
+
+    // red alien
+    glPushMatrix();
+        glTranslatef(3.0, -0.35, -2.0);
+        drawAlien(alienArmAngle, alienAntennaAngle, 1.0f, 0.396f, 0.396f);
+    glPopMatrix();
+
+    // purple alien
+    glPushMatrix();
+        glTranslatef(-1.0, -0.35, 6.0);
+        drawAlien(alienArmAngle, alienAntennaAngle, 0.733f, 0.396f, 1.0f);
+    glPopMatrix();
+
+    // orangeish-yellow alien
+    glPushMatrix();
+        glTranslatef(4.0, -0.35, 14.0);
+        drawAlien(alienArmAngle, alienAntennaAngle, 1.0f, 0.804f, 0.396f);
     glPopMatrix();
 
     glutSwapBuffers();
@@ -149,6 +197,7 @@ int main(int argc, char** argv) {
 
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
+    glutKeyboardUpFunc(keyboardUp);
     glutSpecialFunc(special);
     glutSpecialUpFunc(specialUp);
     glutTimerFunc(16, timer, 0);

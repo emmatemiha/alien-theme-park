@@ -273,10 +273,10 @@ void drawRideStructure(float swingAngle) { // THE POLES!
     glPopMatrix();
 }
 
-void drawAlien() {
+void drawAlien(float armAngle, float antennaAngle, float r, float g, float b) {
     // body
     glPushMatrix();
-        glColor3f(1.0, 0.6, 0.75);
+        glColor3f(r, g, b);
         glTranslatef(0.0, 0.8, 0.0);
         glScalef(0.6, 0.8, 0.6);
         glutSolidSphere(0.5, 16, 12);
@@ -284,7 +284,7 @@ void drawAlien() {
 
     // head
     glPushMatrix();
-        glColor3f(1.0, 0.6, 0.75);
+        glColor3f(r, g, b);
         glTranslatef(0.0, 1.7, 0.0);
         glutSolidSphere(0.7, 24, 16);
     glPopMatrix();
@@ -319,57 +319,60 @@ void drawAlien() {
 
     // left antenna
     glPushMatrix();
-        glColor3f(1.0, 0.6, 0.75);
+        glColor3f(r, g, b);
         glTranslatef(0.4, 2.2, 0.0);
-        glRotatef(-30.0, 0, 0, 1);
+        glRotatef(-antennaAngle, 0, 0, 1);
         glRotatef(-90.0, 1, 0, 0);
         glutSolidCylinder(0.04, 0.6, 8, 1);
     glPopMatrix();
 
     // left antenna ball
-    glPushMatrix();
-        glColor3f(0.6, 0.9, 1.0);
-        glTranslatef(-0.7, 2.72, 0.0);
-        glutSolidSphere(0.1, 12, 8);
-    glPopMatrix();
+    //glPushMatrix();
+    //    glColor3f(0.6, 0.9, 1.0);
+    //    glTranslatef(-0.7, 2.72, 0.0);
+    //    glutSolidSphere(0.1, 12, 8);
+    //glPopMatrix();
 
     // right antenna
     glPushMatrix();
-        glColor3f(1.0, 0.6, 0.75);
+        glColor3f(r, g, b);
         glTranslatef(-0.4, 2.2, 0.0);
-        glRotatef(30.0, 0, 0, 1);
+        glRotatef(antennaAngle, 0, 0, 1);
         glRotatef(-90.0, 1, 0, 0);
         glutSolidCylinder(0.04, 0.6, 8, 1);
     glPopMatrix();
 
     // right antenna ball
-    glPushMatrix();
-        glColor3f(0.6, 0.9, 1.0);
-        glTranslatef(0.7, 2.72, 0.0);
-        glutSolidSphere(0.1, 12, 8);
-    glPopMatrix();
+    //glPushMatrix();
+    //    glColor3f(0.6, 0.9, 1.0);
+    //    glTranslatef(0.7, 2.72, 0.0);
+    //    glRotatef(antennaAngle, 0, 0, 1);
+    //    glutSolidSphere(0.1, 12, 8);
+    //glPopMatrix();
 
     // left arm
     glPushMatrix();
-        glColor3f(1.0, 0.6, 0.75);
+        glColor3f(r, g, b);
         glTranslatef(-0.25, 0.8, 0.0);
-        glRotatef(40.0, 0, 0, 1);
+        //glRotatef(armAngle, 0, 0, 1);
+        glRotatef(60.0 + armAngle, 0, 0, 1);
         glRotatef(-90.0, 1, 0, 0);
         glutSolidCylinder(0.07, 0.45, 8, 1);
     glPopMatrix();
 
     // right arm
     glPushMatrix();
-        glColor3f(1.0, 0.6, 0.75);
+        glColor3f(r, g, b);
         glTranslatef(0.25, 0.8, 0.0);
-        glRotatef(-40.0, 0, 0, 1);
+        //glRotatef(-armAngle, 0, 0, 1);
+        glRotatef(-60.0 - armAngle, 0, 0, 1);
         glRotatef(-90.0, 1, 0, 0);
         glutSolidCylinder(0.07, 0.45, 8, 1);
     glPopMatrix();
 
     // left leg
     glPushMatrix();
-        glColor3f(1.0, 0.6, 0.75);
+        glColor3f(r, g, b);
         glTranslatef(-0.18, 0.35, 0.0);
         glRotatef(-90.0, 1, 0, 0);
         glutSolidCylinder(0.1, 0.3, 8, 1);
@@ -377,7 +380,7 @@ void drawAlien() {
 
     // right leg
     glPushMatrix();
-        glColor3f(1.0, 0.6, 0.75);
+        glColor3f(r, g, b);
         glTranslatef(0.18, 0.35, 0.0);
         glRotatef(-90.0, 1, 0, 0);
         glutSolidCylinder(0.1, 0.3, 8, 1);
