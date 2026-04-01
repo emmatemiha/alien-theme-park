@@ -17,6 +17,7 @@ float camX = 0.0f, camZ = 35.0f;
 bool specialStates[256] = { false };
 float camHeight = -2.0f;
 bool keyStates[256] = { false };
+bool wireframeOn = false;
 
 // for the ride to swing
 float swingAngle = 1.0f;
@@ -24,7 +25,7 @@ float swingSpeed = 0.0f;
 const float gravity = 9.8f;
 const float armLength = 8.0f;
 
-GLuint txId[2];
+GLuint txId[3];
 GLUquadric* q;
 
 // for the aliens to move (arms, antennas and legs)
@@ -57,17 +58,23 @@ bool rideLiftingUp = false;
 bool rideComingDown = false;
 
 void loadTexture() {
-    glGenTextures(2, txId);
+    glGenTextures(3, txId);
     
     //sky
     glBindTexture(GL_TEXTURE_2D, txId[0]);
-    loadBMP("textures/daysky.bmp");
+    loadBMP("textures/brightsky.bmp");
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
     //moon
     glBindTexture(GL_TEXTURE_2D, txId[1]);
-    loadBMP("textures/2k_mercury.bmp");
+    loadBMP("textures/moss.bmp");
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    //poles
+    glBindTexture(GL_TEXTURE_2D, txId[2]);
+    loadBMP("textures/iron.bmp");
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
@@ -101,6 +108,9 @@ void specialUp(int key, int x, int y) {
 
 void keyboard(unsigned char key, int x, int y) {
     keyStates[key] = true;
+    if (key == 'q') {
+        wireframeOn = !wireframeOn;
+    }
 }
 
 void keyboardUp(unsigned char key, int x, int y) {
@@ -212,7 +222,7 @@ void timer(int value) {
         if (rideHeight <= 0.0f && fabs(swingAngle) < 0.3f) {
             blueAlien_state = 5;
             blueAlien_x = rightSeatX;
-            blueAlien_z = rightSeatZ;
+            blueAlien_z = rightSeatZ + 2.0;
         }
     }
     else if (blueAlien_state == 5) {
@@ -252,22 +262,61 @@ void timer(int value) {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
     glutPostRedisplay();
     glutTimerFunc(16, timer, 0);
 }
 
+void drawShadow() {
+    float shadowMatrix[16] = {
+        20, 0,  0,  0,
+        -8, 0, -8, -1,
+        0,  0,  20,  0,
+        0,  0,  0,  20
+    };
+
+    // use fog to force everything to one flat grey colour
+    float fogColour[] = { 0.15f, 0.15f, 0.15f, 1.0f };
+    glEnable(GL_FOG);
+    glFogi(GL_FOG_MODE, GL_LINEAR);
+    glFogfv(GL_FOG_COLOR, fogColour);
+    glFogf(GL_FOG_START, 0.0f);
+    glFogf(GL_FOG_END, 0.001f);  // fog so thick everything is the fog colour
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+
+    glPushMatrix();
+    glMultMatrixf(shadowMatrix);
+    drawRideStructure(swingAngle, rideHeight, -1, -1, 0, 0, 0, 0);
+    if (pinkAlien_state != 2 && pinkAlien_state != 3 && pinkAlien_state != 4) {
+        glPushMatrix();
+        glTranslatef(pinkAlien_x, -0.35f, pinkAlien_z);
+        drawAlien(0, 0, 0, 0.15f, 0.15f, 0.15f);
+        glPopMatrix();
+    }
+    if (blueAlien_state != 2 && blueAlien_state != 3 && blueAlien_state != 4) {
+        glPushMatrix();
+        glTranslatef(blueAlien_x, -0.35f, blueAlien_z);
+        drawAlien(0, 0, 0, 0.15f, 0.15f, 0.15f);
+        glPopMatrix();
+    }
+    glPopMatrix();
+
+    glDisable(GL_FOG);
+    glEnable(GL_LIGHTING);
+}
+
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (wireframeOn) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glDisable(GL_LIGHTING);
+    }
+    else {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glEnable(GL_LIGHTING);
+    }
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
@@ -290,7 +339,7 @@ void display(void) {
     glPushMatrix();
         glRotatef(180.0, 0, 1, 0);
         //glRotatef(-150, 1, 0, 0);
-        glRotatef(120.0, 0, 1, 0);
+        glRotatef(200, 0, 1, 0);
         glScalef(-1.0, 1.0, 1.0);
         gluSphere(q, 200.0, 64, 64);
     glPopMatrix();
@@ -299,8 +348,9 @@ void display(void) {
     glEnable(GL_LIGHTING);
 
     drawFloor(txId[1]);
+    drawShadow();
     drawRideStructure(swingAngle, rideHeight, pinkAlien_state, blueAlien_state,
-        alienArmAngle, alienAntennaAngle, alienLegAngle);
+        alienArmAngle, alienAntennaAngle, alienLegAngle, txId[2]);
 
     // pink alien
     if (pinkAlien_state != 2 && pinkAlien_state != 3 && pinkAlien_state != 4) {

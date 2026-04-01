@@ -14,6 +14,8 @@
 void drawFloor(GLuint moonTex) {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, moonTex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glColor3f(0.8, 0.8, 0.8);
 
@@ -22,12 +24,22 @@ void drawFloor(GLuint moonTex) {
     gluQuadricNormals(qPlanet, GLU_SMOOTH);
     gluQuadricDrawStyle(qPlanet, GLU_FILL);
 
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+    glScalef(12.0, 12.0, 1.0);  // tiles the texture 4x4 times - increase for more detail
+    glMatrixMode(GL_MODELVIEW);
+
     glPushMatrix();
+    glTranslatef(0.0, -0.01, 0.0);
     glRotatef(-90.0, 1, 0, 0);
-    gluDisk(qPlanet, 0.0, 20.0, 64, 8);
+    gluDisk(qPlanet, 0.0, 70.0, 64, 8);
     glTranslatef(0.0, 0.0, -5.0);
-    gluCylinder(qPlanet, 20.0, 20.0, 5.0, 64, 4);
+    gluCylinder(qPlanet, 70.0, 70.0, 5.0, 64, 4);
     glPopMatrix();
+
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
 
     gluDeleteQuadric(qPlanet);
 
@@ -137,14 +149,14 @@ void drawAlien(float armAngle, float antennaAngle, float legAngle, float r, floa
 void drawSpaceship1() { // THE PURPLE ONE
     // main saucer body
     glPushMatrix();
-        glColor3f(0.427, 0.227, 0.839);
+        glColor3f(0.416, 0.251, 0.439);
         glScalef(3.0, 0.5, 3.0);
         glutSolidSphere(0.8f, 32, 16);
     glPopMatrix();
 
     // circle part on top
     glPushMatrix();
-        glColor3f(0.631, 0.451, 1);
+        glColor3f(0.655, 0.4, 0.69);
         glTranslatef(0.0f, 0.4f, 0.0f);
         glScalef(0.8f, 0.7f, 0.8f);
         glutSolidSphere(1.4, 24, 12);
@@ -152,7 +164,7 @@ void drawSpaceship1() { // THE PURPLE ONE
 
     // bottom circle
     glPushMatrix();
-        glColor3f(1.0, 0.6, 0.1);
+        glColor3f(0.961, 0.714, 0.467);
         glTranslatef(0.0, -0.18, 0.0);
         glScalef(2.4, 0.8, 2.4);
         glutSolidSphere(0.6, 32, 16);
@@ -174,7 +186,7 @@ void drawSpaceship1() { // THE PURPLE ONE
     glPopMatrix();
 
     // circles around edge
-    glColor3f(1.0, 0.6, 0.1);
+    glColor3f(0.961, 0.714, 0.467);
 
     for (int i = 0; i < 12; i++) {
         float angle = (2.0 * M_PI * i) / 12;
@@ -188,7 +200,7 @@ void drawSpaceship1() { // THE PURPLE ONE
 
     // left seat base
     glPushMatrix();
-        glColor3f(0.631, 0.451, 1);
+        glColor3f(0.655, 0.4, 0.69);
         glTranslatef(-1.85, 0.15, 0.0);
         glScalef(0.8, 0.3, 0.8);
         glutSolidCube(1.0);
@@ -196,7 +208,7 @@ void drawSpaceship1() { // THE PURPLE ONE
 
     // left seat back
     glPushMatrix();
-        glColor3f(0.631, 0.451, 1);
+        glColor3f(0.655, 0.4, 0.69);
         glTranslatef(-1.5, 0.6, 0.0);
         glRotatef(90.0, 0., 0., 1.);
         glScalef(1.0, 0.3, 0.8);
@@ -205,7 +217,7 @@ void drawSpaceship1() { // THE PURPLE ONE
 
     // right seat base
     glPushMatrix();
-        glColor3f(0.631, 0.451, 1);
+        glColor3f(0.655, 0.4, 0.69);
         glTranslatef(1.85, 0.15, 0.0);
         glScalef(0.8, 0.3, 0.8);
         glutSolidCube(1.0);
@@ -213,7 +225,7 @@ void drawSpaceship1() { // THE PURPLE ONE
 
     // right seat back
     glPushMatrix();
-        glColor3f(0.631, 0.451, 1);
+        glColor3f(0.655, 0.4, 0.69);
         glTranslatef(1.5, 0.6, 0.0);
         glRotatef(90.0, 0., 0., 1.);
         glScalef(1.0, 0.3, 0.8);
@@ -225,14 +237,14 @@ void drawSpaceship1() { // THE PURPLE ONE
 void drawSpaceship2() { // THE GREEN ONE
     // main saucer body
     glPushMatrix();
-        glColor3f(0.235, 0.58, 0.376);
+        glColor3f(0.404, 0.451, 0.294);
         glScalef(3.0, 0.5, 3.0);
         glutSolidSphere(0.8f, 32, 16);
     glPopMatrix();
 
     // circle part on top
     glPushMatrix();
-        glColor3f(0.333, 0.871, 0.553);
+        glColor3f(0.557, 0.62, 0.412);
         glTranslatef(0.0f, 0.4f, 0.0f);
         glScalef(0.8f, 0.7f, 0.8f);
         glutSolidSphere(1.4, 24, 12);
@@ -240,7 +252,7 @@ void drawSpaceship2() { // THE GREEN ONE
 
     // bottom circle
     glPushMatrix();
-        glColor3f(1.0, 0.6, 0.1);
+        glColor3f(0.961, 0.714, 0.467);
         glTranslatef(0.0, -0.18, 0.0);
         glScalef(2.4, 0.8, 2.4);
         glutSolidSphere(0.6, 32, 16);
@@ -262,7 +274,7 @@ void drawSpaceship2() { // THE GREEN ONE
     glPopMatrix();
 
     // circles around rim
-    glColor3f(1.0, 0.6, 0.1);
+    glColor3f(0.961, 0.714, 0.467);
 
     for (int i = 0; i < 12; i++) {
         float angle = (2.0 * M_PI * i) / 12;
@@ -276,7 +288,7 @@ void drawSpaceship2() { // THE GREEN ONE
 
     // left seat base
     glPushMatrix();
-        glColor3f(0.333, 0.871, 0.553);
+        glColor3f(0.557, 0.62, 0.412);
         glTranslatef(-1.85, 0.15, 0.0);
         glScalef(0.8, 0.3, 0.8);
         glutSolidCube(1.0);
@@ -284,7 +296,7 @@ void drawSpaceship2() { // THE GREEN ONE
 
     // left seat back
     glPushMatrix();
-        glColor3f(0.333, 0.871, 0.553);
+        glColor3f(0.557, 0.62, 0.412);
         glTranslatef(-1.5, 0.6, 0.0);
         glRotatef(90.0, 0., 0., 1.);
         glScalef(1.0, 0.3, 0.8);
@@ -293,7 +305,7 @@ void drawSpaceship2() { // THE GREEN ONE
 
     // right seat base
     glPushMatrix();
-        glColor3f(0.333, 0.871, 0.553);
+        glColor3f(0.557, 0.62, 0.412);
         glTranslatef(1.85, 0.15, 0.0);
         glScalef(0.8, 0.3, 0.8);
         glutSolidCube(1.0);
@@ -301,7 +313,7 @@ void drawSpaceship2() { // THE GREEN ONE
 
     // right seat back
     glPushMatrix();
-        glColor3f(0.333, 0.871, 0.553);
+        glColor3f(0.557, 0.62, 0.412);
         glTranslatef(1.5, 0.6, 0.0);
         glRotatef(90.0, 0., 0., 1.);
         glScalef(1.0, 0.3, 0.8);
@@ -309,26 +321,38 @@ void drawSpaceship2() { // THE GREEN ONE
     glPopMatrix();
 }
 
-void drawRideStructure(float swingAngle, float rideHeight, int pinkState, int blueState, float armAngle, float antennaAngle, float legAngle) { // THE POLES!
+void drawRideStructure(float swingAngle, float rideHeight, int pinkState, int blueState, float armAngle, float antennaAngle, float legAngle, GLuint metalTex) { // THE POLES!
     float swingDegrees = swingAngle * 180.0 / M_PI;
 
     float shipY = rideHeight + 1.0f;
     float cableLength = 14.0f - rideHeight;
 
     // pole in middle
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, metalTex);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glPushMatrix();
-        glColor3f(0.5, 0.5, 0.55);
-        glRotatef(-90.0, 1, 0, 0);
-        glutSolidCylinder(0.4, 15.0, 16, 1);
+    glColor3f(1.0, 1.0, 1.0);
+    glRotatef(-90.0, 1, 0, 0);
+    GLUquadric* qPole = gluNewQuadric();
+    gluQuadricTexture(qPole, GL_TRUE);
+    gluQuadricNormals(qPole, GLU_SMOOTH);
+    gluCylinder(qPole, 0.4, 0.4, 15.0, 16, 1);
+    gluDeleteQuadric(qPole);
     glPopMatrix();
 
     // top bar (horizontal)
     glPushMatrix();
-        glColor3f(0.45, 0.45, 0.5);
-        glTranslatef(-8.0, 15.0, 0.0);
-        glRotatef(90.0, 0, 1, 0);
-        glutSolidCylinder(0.3, 16.0, 16, 1);
+    glColor3f(1.0, 1.0, 1.0);
+    glTranslatef(-8.0, 15.0, 0.0);
+    glRotatef(90.0, 0, 1, 0);
+    GLUquadric* qBar = gluNewQuadric();
+    gluQuadricTexture(qBar, GL_TRUE);
+    gluQuadricNormals(qBar, GLU_SMOOTH);
+    gluCylinder(qBar, 0.3, 0.3, 16.0, 16, 1);
+    gluDeleteQuadric(qBar);
     glPopMatrix();
+    glDisable(GL_TEXTURE_2D);
 
     // left cable and ship
     glPushMatrix();
@@ -338,7 +362,7 @@ void drawRideStructure(float swingAngle, float rideHeight, int pinkState, int bl
 
         // left cable
         glPushMatrix();
-            glColor3f(0.4, 0.4, 0.45);
+            glColor3f(0.353, 0.357, 0.333);
             glTranslatef(-6.0, shipY, 0.0);
             glRotatef(-90.0, 1, 0, 0);
             glutSolidCylinder(0.1, cableLength, 8, 1);
@@ -371,7 +395,7 @@ void drawRideStructure(float swingAngle, float rideHeight, int pinkState, int bl
 
         // right cable
         glPushMatrix();
-            glColor3f(0.4, 0.4, 0.45);
+            glColor3f(0.353, 0.357, 0.333);
             glTranslatef(6.0, shipY, 0.0);
             glRotatef(-90.0, 1, 0, 0);
             glutSolidCylinder(0.1, cableLength, 8, 1);
@@ -417,5 +441,134 @@ void drawRideStructure(float swingAngle, float rideHeight, int pinkState, int bl
     glPushMatrix();
         glTranslatef(-11.0, -0.35, 6.0);
         drawAlien(armAngle, antennaAngle, 0.0f, 0.733f, 0.396f, 1.0f);
+    glPopMatrix();
+
+    // rocks scattered around
+    glPushMatrix();
+    glTranslatef(8.0, 0.0, -8.0);
+    drawRock(1.2, 0.329, 0.286, 0.227);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-12.0, 0.0, -5.0);
+    drawRock(0.8, 0.227, 0.267, 0.106);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(14.0, 0.0, 8.0);
+    drawRock(1.5, 0.286, 0.314, 0.129);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-9.0, 0.0, 10.0);
+    drawRock(0.6, 0.494, 0.424, 0.353);
+    glPopMatrix();
+
+
+    glPushMatrix();
+    glTranslatef(5.0, 0.0, -12.0);
+    drawRock(1.0, 0.329, 0.286, 0.227);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(20.0, 0.0, 12.0);
+    drawRock(0.8, 0.227, 0.267, 0.106);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-22.0, 0.0, 20.0);
+    drawRock(1.5, 0.286, 0.314, 0.129);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(28.0, 0.0, 10.0);
+    drawRock(0.6, 0.494, 0.424, 0.353);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.0, 0.0, 25.0);
+    drawRock(0.6, 0.494, 0.424, 0.353);
+    glPopMatrix();
+
+    // alien plants scattered around
+    glPushMatrix();
+    glTranslatef(10.0, 0.0, 5.0);
+    drawAlienPlant(2.0, 0.329, 0.286, 0.227, 0.227, 0.267, 0.106);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-14.0, 0.0, 8.0);
+    drawAlienPlant(1.5, 0.329, 0.286, 0.227, 0.227, 0.267, 0.106);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(6.0, 0.0, -10.0);
+    drawAlienPlant(2.5, 0.494, 0.424, 0.353, 0.286, 0.314, 0.129);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-8.0, 0.0, -12.0);
+    drawAlienPlant(1.8, 0.494, 0.424, 0.353, 0.286, 0.314, 0.129);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(20.0, 0.0, 15.0);
+    drawAlienPlant(6.0, 0.329, 0.286, 0.227, 0.227, 0.267, 0.106);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-22.0, 0.0, 25.0);
+    drawAlienPlant(7.0, 0.329, 0.286, 0.227, 0.227, 0.267, 0.106);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(9.0, 0.0, -25.0);
+    drawAlienPlant(4.0, 0.494, 0.424, 0.353, 0.286, 0.314, 0.129);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-6.0, 0.0, -14.0);
+    drawAlienPlant(3.0, 0.494, 0.424, 0.353, 0.286, 0.314, 0.129);
+    glPopMatrix();
+}
+
+void drawRock(float size, float r, float g, float b) {
+    glPushMatrix();
+    glColor3f(r, g, b);
+    glScalef(size, size * 0.6, size * 0.8);
+    glutSolidSphere(1.0, 12, 8);
+    glPopMatrix();
+}
+
+void drawAlienPlant(float height, float stemR, float stemG, float stemB,
+    float leafR, float leafG, float leafB) {
+    // stem
+    glPushMatrix();
+    glColor3f(stemR, stemG, stemB);
+    glRotatef(-90.0, 1, 0, 0);
+    GLUquadric* qStem = gluNewQuadric();
+    gluCylinder(qStem, 0.1, 0.08, height, 8, 1);
+    gluDeleteQuadric(qStem);
+    glPopMatrix();
+
+    // blob on top
+    glPushMatrix();
+    glColor3f(leafR, leafG, leafB);
+    glTranslatef(0.0, height, 0.0);
+    glScalef(1.0, 0.8, 1.0);
+    glutSolidSphere(0.4, 12, 8);
+    glPopMatrix();
+
+    // two side blobs
+    glPushMatrix();
+    glColor3f(leafR, leafG, leafB);
+    glTranslatef(0.3, height * 0.7, 0.0);
+    glutSolidSphere(0.25, 10, 6);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(leafR, leafG, leafB);
+    glTranslatef(-0.3, height * 0.65, 0.0);
+    glutSolidSphere(0.25, 10, 6);
     glPopMatrix();
 }
