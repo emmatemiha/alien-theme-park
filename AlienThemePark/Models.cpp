@@ -320,7 +320,7 @@ void drawSpaceship2() { // THE GREEN ONE
     glPopMatrix();
 }
 
-void drawRideStructure(float swingAngle, float rideHeight, int pinkState, int blueState, float armAngle, float antennaAngle, float legAngle, GLuint metalTex, float greenX, float greenZ, float greenAngle, float yellowX, float yellowZ, float yellowAngle, float redX, float redZ, float redAngle, float purpleX, float purpleZ, float purpleAngle) { // THE POLES!
+void drawRideStructure(float swingAngle, float rideHeight, int pinkState, int blueState, float armAngle, float antennaAngle, float legAngle, GLuint metalTex) { // THE POLES!
     float swingDegrees = swingAngle * 180.0 / M_PI;
     float shipY = rideHeight + 1.0f;
     float cableLength = 14.0f - rideHeight;
@@ -398,30 +398,26 @@ void drawRideStructure(float swingAngle, float rideHeight, int pinkState, int bl
 
     // green alien standing near the ride
     glPushMatrix();
-        glTranslatef(greenX, -0.35, greenZ);
-        glRotatef(greenAngle, 0, 1, 0);
-        drawAlien(armAngle, antennaAngle, 0.0f, 0.396f, 1.0f, 0.557f);
+    glTranslatef(15.0f, -0.35f, 4.0f);
+    drawAlien(armAngle, antennaAngle, legAngle, 0.396f, 1.0f, 0.557f);
     glPopMatrix();
 
     // yellow alien standing near the ride
     glPushMatrix();
-        glTranslatef(yellowX, -0.35, yellowZ);
-        glRotatef(yellowAngle, 0, 1, 0);
-        drawAlien(armAngle, antennaAngle, 0.0f, 1.0f, 0.804f, 0.396f);
+    glTranslatef(-17.0f, -0.35f, -3.0f);
+    drawAlien(armAngle, antennaAngle, legAngle, 1.0f, 0.804f, 0.396f);
     glPopMatrix();
 
     // red alien standing near the ride
     glPushMatrix();
-        glTranslatef(redX, -0.35, redZ);
-        glRotatef(redAngle, 0, 1, 0);
-        drawAlien(armAngle, antennaAngle, 0.0f, 1.0f, 0.396f, 0.396f);
+    glTranslatef(11.0f, -0.35f, -2.0f);
+    drawAlien(armAngle, antennaAngle, legAngle, 1.0f, 0.396f, 0.396f);
     glPopMatrix();
 
     // purple alien standing near the ride
     glPushMatrix();
-        glTranslatef(purpleX, -0.35, purpleZ);
-        glRotatef(purpleAngle, 0, 1, 0);
-        drawAlien(armAngle, antennaAngle, 0.0f, 0.733f, 0.396f, 1.0f);
+    glTranslatef(-11.0f, -0.35f, 6.0f);
+    drawAlien(armAngle, antennaAngle, legAngle, 0.733f, 0.396f, 1.0f);
     glPopMatrix();
 
     // rocks scattered around

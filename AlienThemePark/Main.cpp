@@ -38,9 +38,6 @@ float spotlightAngle = 0.0f;
 float spotlightColourPhase = 0.0f;
 
 // for the pink alien to move around
-// states: 0 = walking to seat, 1 = sitting on ground waiting,
-//         2 = going up on ride,  3 = riding,
-//         4 = coming back down,  5 = walking away
 float pinkAlien_x = -8.0f;
 float pinkAlien_y = -0.35f;
 float pinkAlien_z = 8.0f;
@@ -48,9 +45,6 @@ int   pinkAlien_state = 0;
 float pinkAlien_rideTimer = 0.0f;
 
 // for the blue alien to move around
-// states: 0 = walking to seat, 1 = sitting on ground waiting,
-//         2 = going up on ride,  3 = riding,
-//         4 = coming back down,  5 = walking away
 float blueAlien_x = 8.0f;
 float blueAlien_y = -0.35f;
 float blueAlien_z = 10.0f;
@@ -61,28 +55,6 @@ float blueAlien_rideTimer = 0.0f;
 float rideHeight = 0.0f;
 bool rideLiftingUp = false;
 bool rideComingDown = false;
-
-// other 4 aliens walking around
-float greenAlien_x = 15.0f;
-float greenAlien_z = 4.0f;
-bool  greenAlien_goingToTarget = true;
-float greenAlien_angle = 0.0f;
-
-float yellowAlien_x = -17.0f;
-float yellowAlien_z = -3.0f;
-bool  yellowAlien_goingToTarget = true;
-float yellowAlien_angle = 0.0f;
-
-float redAlien_x = 11.0f;
-float redAlien_z = -2.0f;
-bool  redAlien_goingToTarget = true;
-float redAlien_angle = 0.0f;
-
-float purpleAlien_x = -11.0f;
-float purpleAlien_z = 6.0f;
-bool  purpleAlien_goingToTarget = true;
-float purpleAlien_angle = 0.0f;
-
 
 void loadTexture() {
     glGenTextures(3, txId);
@@ -145,32 +117,6 @@ void keyboardUp(unsigned char key, int x, int y) {
     keyStates[key] = false;
 }
 
-bool moveToward(float& x, float& z, float& angle,
-    float targetX, float targetZ, float speed) {
-
-    float dx = targetX - x;
-    float dz = targetZ - z;
-    float dist = sqrt(dx * dx + dz * dz);
-
-    if (dist < 0.3f) return true;
-
-    float newX = x + (dx / dist) * speed;
-    float newZ = z + (dz / dist) * speed;
-
-    // 🚫 STOP them entering ride area (circle radius 10)
-    float newRadius = sqrt(newX * newX + newZ * newZ);
-    if (newRadius < 10.0f) {
-        return false; // just cancel movement
-    }
-
-    x = newX;
-    z = newZ;
-
-    angle = atan2(dx, dz) * 180.0f / (float)M_PI;
-
-    return false;
-}
-
 void timer(int value) {
 
     // for aliens to move
@@ -179,13 +125,14 @@ void timer(int value) {
     alienAntennaAngle = -25.0f * sin(alienFrame);
     alienLegAngle = 20.0f * sin(alienFrame);
 
+    // for the spotlight to orbit the scene and change colour
     spotlightAngle += 1.0f;
     if (spotlightAngle > 360.0f) {
         spotlightAngle -= 360.0f;
     }
     spotlightColourPhase += 0.05f;
 
-    // for rides pendulum swing
+    // for the rides pendulum swing
     float acceleration = -(gravity / armLength) * sin(swingAngle);
     swingSpeed += acceleration * 0.016f;
     swingAngle += swingSpeed * 0.016f;
@@ -199,43 +146,6 @@ void timer(int value) {
     if (keyStates['s']) camZ += 0.2f;
     if (keyStates['a']) camAngle -= 1.0f;
     if (keyStates['d']) camAngle += 1.0f;
-
-    // ---- 4 wandering aliens walk back and forth ----
-    if (greenAlien_goingToTarget) {
-        if (moveToward(greenAlien_x, greenAlien_z, greenAlien_angle, -20.0f, -15.0f, 0.04f))
-            greenAlien_goingToTarget = false;
-    }
-    else {
-        if (moveToward(greenAlien_x, greenAlien_z, greenAlien_angle, 20.0f, 10.0f, 0.04f))
-            greenAlien_goingToTarget = true;
-    }
-
-    if (yellowAlien_goingToTarget) {
-        if (moveToward(yellowAlien_x, yellowAlien_z, yellowAlien_angle, 25.0f, 15.0f, 0.035f))
-            yellowAlien_goingToTarget = false;
-    }
-    else {
-        if (moveToward(yellowAlien_x, yellowAlien_z, yellowAlien_angle, - 25.0f, -10.0f, 0.035f))
-            yellowAlien_goingToTarget = true;
-    }
-
-    if (redAlien_goingToTarget) {
-        if (moveToward(redAlien_x, redAlien_z, redAlien_angle, -20.0f, 20.0f, 0.045f))
-            redAlien_goingToTarget = false;
-    }
-    else {
-        if (moveToward(redAlien_x, redAlien_z, redAlien_angle, 20.0f, -15.0f, 0.045f))
-            redAlien_goingToTarget = true;
-    }
-
-    if (purpleAlien_goingToTarget) {
-        if (moveToward(purpleAlien_x, purpleAlien_z, purpleAlien_angle, 15.0f, -20.0f, 0.038f))
-            purpleAlien_goingToTarget = false;
-    }
-    else {
-        if (moveToward(purpleAlien_x, purpleAlien_z, purpleAlien_angle, -15.0f, 15.0f, 0.038f))
-            purpleAlien_goingToTarget = true;
-    }
 
     // FOR THE PINK ALIEN TO GO ON THE LEFT SEAT
     float leftSeatX = -6.0f;
@@ -276,7 +186,6 @@ void timer(int value) {
     }
     else if (pinkAlien_state == 5) {
         float distanceX = -8.0f - pinkAlien_x;
-        //float distanceZ = 8.0f - pinkAlien_z;
         float distanceZ = 15.0f - pinkAlien_z;
         float totalDistance = sqrt(distanceX * distanceX + distanceZ * distanceZ);
         if (totalDistance < 0.5f) {
@@ -327,7 +236,6 @@ void timer(int value) {
     }
     else if (blueAlien_state == 5) {
         float distanceX = 8.0f - blueAlien_x;
-        //float distanceZ = 10.0f - blueAlien_z;
         float distanceZ = -12.0f - blueAlien_z;
         float totalDistance = sqrt(distanceX * distanceX + distanceZ * distanceZ);
         if (totalDistance < 0.5f) {
@@ -377,24 +285,19 @@ void drawShadow() {
         0,  0,  0,  20
     };
 
-    // use fog to force everything to one flat grey colour
     float fogColour[] = { 0.15f, 0.15f, 0.15f, 1.0f };
     glEnable(GL_FOG);
     glFogi(GL_FOG_MODE, GL_LINEAR);
     glFogfv(GL_FOG_COLOR, fogColour);
     glFogf(GL_FOG_START, 0.0f);
-    glFogf(GL_FOG_END, 0.001f);  // fog so thick everything is the fog colour
+    glFogf(GL_FOG_END, 0.001f);
 
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
 
     glPushMatrix();
     glMultMatrixf(shadowMatrix);
-    drawRideStructure(swingAngle, rideHeight, -1, -1, 0, 0, 0, 0,
-        greenAlien_x, greenAlien_z, greenAlien_angle,
-        yellowAlien_x, yellowAlien_z, yellowAlien_angle,
-        redAlien_x, redAlien_z, redAlien_angle,
-        purpleAlien_x, purpleAlien_z, purpleAlien_angle);
+    drawRideStructure(swingAngle, rideHeight, -1, -1, 0, 0, 0, 0);
     if (pinkAlien_state != 2 && pinkAlien_state != 3 && pinkAlien_state != 4) {
         glPushMatrix();
         glTranslatef(pinkAlien_x, -0.35f, pinkAlien_z);
@@ -438,13 +341,14 @@ void display(void) {
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
 
     // spotlight
-    // moving in a circle
+    
+    // movement
     float spotX = 12.0f * cos(spotlightAngle * (float)M_PI / 180.0f);
     float spotZ = 12.0f * sin(spotlightAngle * (float)M_PI / 180.0f);
     float spotPos[] = { spotX, 15.0f, spotZ, 1.0f };
     float spotDir[] = { -spotX, -15.0f, -spotZ };
 
-    // animated colour
+    // colour
     float r = 1.0f;
     float g = 0.2f + 0.2f * sin(spotlightColourPhase);
     float b = 0.6f + 0.4f * sin(spotlightColourPhase + 1.5f);
@@ -459,9 +363,7 @@ void display(void) {
     glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 20.0f);
     glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spotDir);
 
-    // ================= VISIBLE LIGHT SOURCE =================
-
-    // draw small glowing sphere so you can see it
+    // object the spotlight is connected to
     glDisable(GL_LIGHTING);
     glColor3f(0.671, 0.38, 0.482);
     glPushMatrix();
@@ -478,7 +380,6 @@ void display(void) {
     glDepthMask(GL_FALSE);
     glPushMatrix();
         glRotatef(180.0, 0, 1, 0);
-        //glRotatef(-150, 1, 0, 0);
         glRotatef(200, 0, 1, 0);
         glScalef(-1.0, 1.0, 1.0);
         gluSphere(q, 200.0, 64, 64);
@@ -489,13 +390,11 @@ void display(void) {
 
     drawFloor(txId[1]);
     drawShadow();
-    drawRideStructure(swingAngle, rideHeight, pinkAlien_state, blueAlien_state, alienArmAngle, alienAntennaAngle, alienLegAngle, txId[2], greenAlien_x, greenAlien_z, greenAlien_angle, yellowAlien_x, yellowAlien_z, yellowAlien_angle, redAlien_x, redAlien_z, redAlien_angle, purpleAlien_x, purpleAlien_z, purpleAlien_angle);
+    drawRideStructure(swingAngle, rideHeight, pinkAlien_state, blueAlien_state, alienArmAngle, alienAntennaAngle, alienLegAngle, txId[2]);
 
     // pink alien
     glPushMatrix();
-
-    if (pinkAlien_state == 2 || pinkAlien_state == 3 || pinkAlien_state == 4) {
-        // ON RIDE → stick to seat
+    if (pinkAlien_state == 2 || pinkAlien_state == 3 || pinkAlien_state == 4) { // on ride
         glPushMatrix();
             glTranslatef(-6.0, 15.0, 0.0);
             glRotatef(swingAngle * 180.0 / M_PI, 1, 0, 0);
@@ -506,8 +405,7 @@ void display(void) {
             drawAlien(alienArmAngle, alienAntennaAngle, 0.0f, 1.0f, 0.6f, 0.75f);
         glPopMatrix();
     }
-    else {
-        // NORMAL walking
+    else { // walking around
         glTranslatef(pinkAlien_x, pinkAlien_y, pinkAlien_z);
         drawAlien(alienArmAngle, alienAntennaAngle, alienLegAngle, 1.0f, 0.6f, 0.75f);
     }
@@ -516,24 +414,21 @@ void display(void) {
 
     // blue alien
     glPushMatrix();
-
-    if (blueAlien_state == 2 || blueAlien_state == 3 || blueAlien_state == 4) {
-        glPushMatrix();
-            glTranslatef(6.0, 15.0, 0.0);
-            glRotatef(-swingAngle * 180.0 / M_PI, 1, 0, 0);
-            glTranslatef(-6.0, -15.0, 0.0);
-            float shipY = rideHeight + 1.0f;
-            glTranslatef(6.0, shipY + 0.1f, 3.0);
-            drawAlien(alienArmAngle, alienAntennaAngle, 0.0f, 0.396f, 0.827f, 1.0f);
-        glPopMatrix();
-    }
-    else {
-        glTranslatef(blueAlien_x, blueAlien_y, blueAlien_z);
-        drawAlien(alienArmAngle, alienAntennaAngle, alienLegAngle, 0.396f, 0.827f, 1.0f);
-    }
-
+        if (blueAlien_state == 2 || blueAlien_state == 3 || blueAlien_state == 4) { // on ride
+            glPushMatrix();
+                glTranslatef(6.0, 15.0, 0.0);
+                glRotatef(-swingAngle * 180.0 / M_PI, 1, 0, 0);
+                glTranslatef(-6.0, -15.0, 0.0);
+                float shipY = rideHeight + 1.0f;
+                glTranslatef(6.0, shipY + 0.1f, 3.0);
+                drawAlien(alienArmAngle, alienAntennaAngle, 0.0f, 0.396f, 0.827f, 1.0f);
+            glPopMatrix();
+        }
+        else { // walking around
+            glTranslatef(blueAlien_x, blueAlien_y, blueAlien_z);
+            drawAlien(alienArmAngle, alienAntennaAngle, alienLegAngle, 0.396f, 0.827f, 1.0f);
+        }
     glPopMatrix();
-
     glutSwapBuffers();
 }
 
