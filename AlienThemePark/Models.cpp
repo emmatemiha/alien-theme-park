@@ -26,7 +26,7 @@ void drawFloor(GLuint moonTex) {
 
     glMatrixMode(GL_TEXTURE);
     glLoadIdentity();
-    glScalef(12.0, 12.0, 1.0);  // tiles the texture 4x4 times - increase for more detail
+    glScalef(12.0, 12.0, 1.0);
     glMatrixMode(GL_MODELVIEW);
 
     glPushMatrix();
@@ -44,7 +44,6 @@ void drawFloor(GLuint moonTex) {
     gluDeleteQuadric(qPlanet);
     glDisable(GL_TEXTURE_2D);
 }
-
 
 void drawAlien(float armAngle, float antennaAngle, float legAngle, float r, float g, float b) {
     // body
@@ -466,45 +465,45 @@ void drawRideStructure(float swingAngle, float rideHeight, int pinkState, int bl
     drawRock(0.6, 0.494, 0.424, 0.353);
     glPopMatrix();
 
-    // alien plants scattered around
+    // trees scattered around
     glPushMatrix();
     glTranslatef(10.0, 0.0, 5.0);
-    drawAlienPlant(2.0, 0.329, 0.286, 0.227, 0.227, 0.267, 0.106);
+    drawTree(2.0, 0.329, 0.286, 0.227, 0.227, 0.267, 0.106);
     glPopMatrix();
 
     glPushMatrix();
     glTranslatef(-14.0, 0.0, 8.0);
-    drawAlienPlant(1.5, 0.329, 0.286, 0.227, 0.227, 0.267, 0.106);
+    drawTree(1.5, 0.329, 0.286, 0.227, 0.227, 0.267, 0.106);
     glPopMatrix();
 
     glPushMatrix();
     glTranslatef(6.0, 0.0, -10.0);
-    drawAlienPlant(2.5, 0.494, 0.424, 0.353, 0.286, 0.314, 0.129);
+    drawTree(2.5, 0.494, 0.424, 0.353, 0.286, 0.314, 0.129);
     glPopMatrix();
 
     glPushMatrix();
     glTranslatef(-8.0, 0.0, -12.0);
-    drawAlienPlant(1.8, 0.494, 0.424, 0.353, 0.286, 0.314, 0.129);
+    drawTree(1.8, 0.494, 0.424, 0.353, 0.286, 0.314, 0.129);
     glPopMatrix();
 
     glPushMatrix();
     glTranslatef(20.0, 0.0, 15.0);
-    drawAlienPlant(6.0, 0.329, 0.286, 0.227, 0.227, 0.267, 0.106);
+    drawTree(6.0, 0.329, 0.286, 0.227, 0.227, 0.267, 0.106);
     glPopMatrix();
 
     glPushMatrix();
     glTranslatef(-22.0, 0.0, 25.0);
-    drawAlienPlant(7.0, 0.329, 0.286, 0.227, 0.227, 0.267, 0.106);
+    drawTree(7.0, 0.329, 0.286, 0.227, 0.227, 0.267, 0.106);
     glPopMatrix();
 
     glPushMatrix();
     glTranslatef(9.0, 0.0, -25.0);
-    drawAlienPlant(4.0, 0.494, 0.424, 0.353, 0.286, 0.314, 0.129);
+    drawTree(4.0, 0.494, 0.424, 0.353, 0.286, 0.314, 0.129);
     glPopMatrix();
 
     glPushMatrix();
     glTranslatef(-6.0, 0.0, -14.0);
-    drawAlienPlant(3.0, 0.494, 0.424, 0.353, 0.286, 0.314, 0.129);
+    drawTree(3.0, 0.494, 0.424, 0.353, 0.286, 0.314, 0.129);
     glPopMatrix();
 }
 
@@ -516,8 +515,7 @@ void drawRock(float size, float r, float g, float b) {
     glPopMatrix();
 }
 
-void drawAlienPlant(float height, float stemR, float stemG, float stemB,
-    float leafR, float leafG, float leafB) {
+void drawTree(float height, float stemR, float stemG, float stemB, float leafR, float leafG, float leafB) {
     // stem
     glPushMatrix();
     glColor3f(stemR, stemG, stemB);

@@ -138,14 +138,14 @@ void timer(int value) {
     swingAngle += swingSpeed * 0.016f;
 
     // camera movements
-    if (specialStates[GLUT_KEY_DOWN])  camHeight += 0.2f;
-    if (specialStates[GLUT_KEY_UP])    camHeight -= 0.2f;
-    if (specialStates[GLUT_KEY_LEFT])  camX -= 0.2f;
-    if (specialStates[GLUT_KEY_RIGHT]) camX += 0.2f;
-    if (keyStates['w']) camZ -= 0.2f;
-    if (keyStates['s']) camZ += 0.2f;
-    if (keyStates['a']) camAngle -= 1.0f;
-    if (keyStates['d']) camAngle += 1.0f;
+    if (specialStates[GLUT_KEY_DOWN])  camZ += 0.2f;
+    if (specialStates[GLUT_KEY_UP])    camZ -= 0.2f;
+    if (specialStates[GLUT_KEY_LEFT])  camAngle -= 1.0f;
+    if (specialStates[GLUT_KEY_RIGHT]) camAngle += 1.0f;
+    if (keyStates['w']) camHeight -= 0.2f;
+    if (keyStates['s']) camHeight += 0.2f;
+    if (keyStates['a']) camX -= 0.2f;
+    if (keyStates['d']) camX += 0.2f;
 
     // FOR THE PINK ALIEN TO GO ON THE LEFT SEAT
     float leftSeatX = -6.0f;
