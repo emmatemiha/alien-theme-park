@@ -1,0 +1,8 @@
+# Visual Studio junk
+.vs/
+bin/
+obj/
+
+# unwanted files
+*.zip
+loadTGA.h
