@@ -1,8 +1,23 @@
-# Visual Studio junk
+# vs
 .vs/
+*.user
+*.suo
+
+# output
 bin/
 obj/
+Debug/
+Release/
 
-# unwanted files
-*.zip
+# dlls
+*.dll
+
+# don't want
 loadTGA.h
+*.zip
+
+# unused textures
+AlienThemePark/textures/*
+!AlienThemePark/textures/iron.bmp
+!AlienThemePark/textures/moss.bmp
+!AlienThemePark/textures/brightsky.bmp
