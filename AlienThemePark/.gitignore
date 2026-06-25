@@ -16,8 +16,8 @@ Release/
 loadTGA.h
 *.zip
 
-# unused textures
-AlienThemePark/textures/*
-!AlienThemePark/textures/iron.bmp
-!AlienThemePark/textures/moss.bmp
-!AlienThemePark/textures/brightsky.bmp
+# ignore unwanted texture
+textures/*
+!textures/iron.bmp
+!textures/moss.bmp
+!textures/brightsky.bmp
